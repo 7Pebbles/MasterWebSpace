@@ -42,27 +42,19 @@
     <div class="bounding-box">
         <div class="circle" id="circle"></div>
     </div>
-    <button id="applyForce">Apply Force</button>
     <script>
-       const circle = document.getElementById("circle");
+      const circle = document.getElementById("circle");
 const boundingBox = document.querySelector(".bounding-box");
-const applyForceButton = document.getElementById("applyForce");
 
 let velocityX = 0;
 let velocityY = 0;
 const friction = 0.98; // Friction to slow down the circle's motion
-
-applyForceButton.addEventListener("click", () => {
-    // Apply a random force to the circle
-    const forceX = Math.random() * 10 - 5; // Random force between -5 and 5 in the X direction
-    const forceY = Math.random() * 10 - 5; // Random force between -5 and 5 in the Y direction
-
-    // Update the velocity
-    velocityX += forceX;
-    velocityY += forceY;
-});
+const gravity = 0.5; // Constant gravity force
 
 function updateCirclePosition() {
+    // Apply gravity to the circle
+    velocityY += gravity;
+
     // Apply friction to slow down the circle
     velocityX *= friction;
     velocityY *= friction;
