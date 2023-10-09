@@ -7,62 +7,84 @@
     <title>Circle Physics Simulator</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
 
-        .circle {
-            width: 100px;
-            height: 100px;
-            background-color: #3498db;
-            border-radius: 50%;
-            position: absolute;
-            transition: all 0.2s;
-        }
+.bounding-box {
+    width: 300px;
+    height: 300px;
+    border: 2px solid #3498db;
+    position: relative;
+    overflow: hidden;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.2s;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
     </style>
 </head>
 
 <body>
-    <div class="circle" id="circle"></div>
+    <div class="bounding-box">
+        <div class="circle" id="circle"></div>
+    </div>
     <button id="applyForce">Apply Force</button>
     <script>
-        const circle = document.getElementById("circle");
-        const applyForceButton = document.getElementById("applyForce");
+       const circle = document.getElementById("circle");
+const boundingBox = document.querySelector(".bounding-box");
+const applyForceButton = document.getElementById("applyForce");
 
-        let velocityX = 0;
-        let velocityY = 0;
-        const friction = 0.98; // Friction to slow down the circle's motion
+let velocityX = 0;
+let velocityY = 0;
+const friction = 0.98; // Friction to slow down the circle's motion
 
-        applyForceButton.addEventListener("click", () => {
-            // Apply a random force to the circle
-            const forceX = Math.random() * 10 - 5; // Random force between -5 and 5 in the X direction
-            const forceY = Math.random() * 10 - 5; // Random force between -5 and 5 in the Y direction
+applyForceButton.addEventListener("click", () => {
+    // Apply a random force to the circle
+    const forceX = Math.random() * 10 - 5; // Random force between -5 and 5 in the X direction
+    const forceY = Math.random() * 10 - 5; // Random force between -5 and 5 in the Y direction
 
-            // Update the velocity
-            velocityX += forceX;
-            velocityY += forceY;
-        });
+    // Update the velocity
+    velocityX += forceX;
+    velocityY += forceY;
+});
 
-        function updateCirclePosition() {
-            // Apply friction to slow down the circle
-            velocityX *= friction;
-            velocityY *= friction;
+function updateCirclePosition() {
+    // Apply friction to slow down the circle
+    velocityX *= friction;
+    velocityY *= friction;
 
-            // Update the circle's position
-            const circleX = parseFloat(circle.style.left || 0);
-            const circleY = parseFloat(circle.style.top || 0);
-            circle.style.left = circleX + velocityX + "px";
-            circle.style.top = circleY + velocityY + "px";
+    // Update the circle's position
+    const circleX = parseFloat(circle.style.left || 0);
+    const circleY = parseFloat(circle.style.top || 0);
 
-            requestAnimationFrame(updateCirclePosition);
-        }
+    // Ensure the circle stays within the bounding box
+    if (circleX + velocityX >= 0 && circleX + velocityX <= boundingBox.offsetWidth - circle.offsetWidth) {
+        circle.style.left = circleX + velocityX + "px";
+    }
+    if (circleY + velocityY >= 0 && circleY + velocityY <= boundingBox.offsetHeight - circle.offsetHeight) {
+        circle.style.top = circleY + velocityY + "px";
+    }
 
-        // Start the animation loop
-        updateCirclePosition();
+    requestAnimationFrame(updateCirclePosition);
+}
+
+// Start the animation loop
+updateCirclePosition();
+
     </script>
 </body>
 
