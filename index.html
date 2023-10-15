@@ -1,83 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circle Physics Simulator</title>
-    <style>
-        body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-}
-
-.bounding-box {
-    width: 300px;
-    height: 300px;
-    border: 2px solid #3498db;
-    position: relative;
-    overflow: hidden;
-}
-
-.circle {
-    width: 100px;
-    height: 100px;
-    background-color: #3498db;
-    border-radius: 50%;
-    position: absolute;
-    transition: all 0.2s;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-    </style>
-</head>
-
-<body>
-    <div class="bounding-box">
-        <div class="circle" id="circle"></div>
-    </div>
-    <script>
-      const circle = document.getElementById("circle");
-const boundingBox = document.querySelector(".bounding-box");
-
-let velocityX = 0;
-let velocityY = 0;
-const friction = 0.98; // Friction to slow down the circle's motion
-const gravity = 0.5; // Constant gravity force
-
-function updateCirclePosition() {
-    // Apply gravity to the circle
-    velocityY += gravity;
-
-    // Apply friction to slow down the circle
-    velocityX *= friction;
-    velocityY *= friction;
-
-    // Update the circle's position
-    const circleX = parseFloat(circle.style.left || 0);
-    const circleY = parseFloat(circle.style.top || 0);
-
-    // Ensure the circle stays within the bounding box
-    if (circleX + velocityX >= 0 && circleX + velocityX <= boundingBox.offsetWidth - circle.offsetWidth) {
-        circle.style.left = circleX + velocityX + "px";
-    }
-    if (circleY + velocityY >= 0 && circleY + velocityY <= boundingBox.offsetHeight - circle.offsetHeight) {
-        circle.style.top = circleY + velocityY + "px";
-    }
-
-    requestAnimationFrame(updateCirclePosition);
-}
-
-// Start the animation loop
-updateCirclePosition();
-
-    </script>
-</body>
-
-</html>
+<canvas id="gardun" width="1000" height="1000"></canvas>
+<script>
+m = document.getElementById("gardun").getContext("2d")
+atom = function(x,y,c){m.fillStyle=c; m.fillRect(x,y,3,3)}
+for(y=1; y<1000; y++){
+for(x=1; x<1000; x++){
+dx = (x-500)/2000-0.12
+dy = (y-500)/2000-0.82
+a = dx
+b = dy
+for(t=1; t<200; t++){
+d = (a*a)-(b*b)+dx
+b = 2*(a*b)+dy
+a = d
+H = d>200
+if(H){atom(x,y,"rgb("+ t*3 +","+ t +","+ t*0.5 +")"); break}
+}}}
+</script>
